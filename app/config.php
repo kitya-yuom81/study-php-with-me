@@ -1,15 +1,18 @@
 <?php
 namespace App;
 
-const BASE_PATH = __DIR__ . '/..';
-const STORAGE   = BASE_PATH . '/storage/tasks.json';
-const ASSETS    = '/assets';
+// ==== GLOBAL CONSTANTS (easy to use in views) ====
+if (!defined('BASE_PATH')) define('BASE_PATH', __DIR__ . '/..');
+if (!defined('ASSETS'))    define('ASSETS', '/assets');
+if (!defined('STORAGE'))   define('STORAGE', BASE_PATH . '/storage/tasks.json');
 
+// ensure storage file exists
 if (!file_exists(STORAGE)) {
     @mkdir(dirname(STORAGE), 0777, true);
     file_put_contents(STORAGE, json_encode([], JSON_PRETTY_PRINT));
 }
 
+// ==== helper functions (kept in App namespace) ====
 function csrf_token(): string {
     if (empty($_SESSION['csrf'])) {
         $_SESSION['csrf'] = bin2hex(random_bytes(16));
@@ -20,12 +23,14 @@ function csrf_ok(): bool {
     return isset($_POST['_csrf']) && hash_equals($_SESSION['csrf'] ?? '', $_POST['_csrf']);
 }
 
+/** Render a view inside the layout. */
 function render(string $view, array $data = []): void {
     extract($data);
     $viewFile = BASE_PATH . '/views/' . $view . '.php';
     require BASE_PATH . '/views/layout.php';
 }
 
+/** Redirect helper. */
 function redirect(string $to = '/'): void {
     header('Location: ' . $to);
     exit;

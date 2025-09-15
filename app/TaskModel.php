@@ -2,15 +2,15 @@
 namespace App;
 
 final class TaskModel {
-    /** @return array<int,array{text:string,done:bool,id:string}> */
+    /** @return array<int,array{id:string,text:string,done:bool}> */
     public function all(): array {
-        $raw = json_decode(file_get_contents(STORAGE), true) ?: [];
+        $raw = json_decode(file_get_contents(\STORAGE), true) ?: [];
         return $raw;
     }
 
-    /** @param array<int,array{text:string,done:bool,id:string}> $tasks */
+    /** @param array<int,array{id:string,text:string,done:bool}> $tasks */
     private function save(array $tasks): void {
-        file_put_contents(STORAGE, json_encode(array_values($tasks), JSON_PRETTY_PRINT));
+        file_put_contents(\STORAGE, json_encode(array_values($tasks), JSON_PRETTY_PRINT));
     }
 
     public function add(string $text): void {
