@@ -40,6 +40,28 @@ h2 {
   background: #eef6ff;
   color: #1766d1;
 }
+.flash-wrap {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0;
+}
+.flash {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.flash.success {
+  background: #ecfdf3;
+  color: #027a48;
+}
+.flash.error {
+  background: #fef3f2;
+  color: #b42318;
+}
+.flash.info {
+  background: #eff8ff;
+  color: #175cd3;
+}
 .add-form {
   display: flex;
   gap: 10px;
@@ -51,6 +73,11 @@ h2 {
   border: 1px solid #d7dbe7;
   border-radius: 10px;
   font-size: 16px;
+}
+.add-form input[type="text"]:focus {
+  border-color: #70c387;
+  box-shadow: 0 0 0 3px #e5f6ea;
+  outline: none;
 }
 .add-form button {
   padding: 12px 18px;

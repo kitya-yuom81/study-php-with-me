@@ -1,4 +1,4 @@
-<?php /** @var array $tasks */ /** @var array $counts */ /** @var string $filter */ /** @var string $csrf */ ?>
+<?php /** @var array $tasks */ /** @var array $counts */ /** @var string $filter */ /** @var string $csrf */ /** @var array $flash */ ?>
 <div class="card">
   <header class="header">
     <h2>✅ My To-Do List</h2>
@@ -9,9 +9,17 @@
     </nav>
   </header>
 
+  <?php if (!empty($flash)): ?>
+    <div class="flash-wrap">
+      <?php foreach ($flash as $f): ?>
+        <div class="flash <?= htmlspecialchars($f['type']) ?>"><?= htmlspecialchars($f['msg']) ?></div>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+
   <form class="add-form" method="post" action="/task/create">
     <input type="hidden" name="_csrf" value="<?= $csrf ?>">
-    <input type="text" name="text" placeholder="Add a new task…" autocomplete="off">
+    <input type="text" name="text" placeholder="Add a new task…" autocomplete="off" autofocus onkeydown="if(event.key==='Enter'){this.form.submit()}">
     <button type="submit">Add</button>
   </form>
 
@@ -21,10 +29,10 @@
     <ul class="list">
       <?php foreach ($tasks as $t): ?>
         <li class="row <?= $t['done'] ? 'done' : '' ?>">
-          <form method="post" action="/task/toggle">
+          <form method="post" action="/task/toggle" title="Toggle">
             <input type="hidden" name="_csrf" value="<?= $csrf ?>">
             <input type="hidden" name="id" value="<?= htmlspecialchars($t['id']) ?>">
-            <button class="pill" title="Toggle">✔</button>
+            <button class="pill">✔</button>
           </form>
 
           <form class="text-form" method="post" action="/task/update">
@@ -37,7 +45,7 @@
           <form method="post" action="/task/delete" onsubmit="return confirm('Delete this task?')">
             <input type="hidden" name="_csrf" value="<?= $csrf ?>">
             <input type="hidden" name="id" value="<?= htmlspecialchars($t['id']) ?>">
-            <button class="pill danger" title="Delete">✖</button>
+            <button class="pill danger">✖</button>
           </form>
         </li>
       <?php endforeach; ?>
